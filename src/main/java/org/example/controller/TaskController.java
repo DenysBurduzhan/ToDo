@@ -21,7 +21,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/")
+    @RequestMapping("/{id}")
     public String tasks(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                             @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         List<Task> tasks = taskService.getAll((page - 1) * limit, limit);
@@ -30,7 +30,7 @@ public class TaskController {
     }
 
     @PostMapping("/{id}")
-    public void edit( Model model,
+    public String edit( Model model,
                       @PathVariable Integer id,
                       @RequestBody TaskInfo info){
         if(isNull(id) || id <= 0){
@@ -38,11 +38,13 @@ public class TaskController {
         }
 
         Task task = taskService.edit(id, info.getDescription(), info.getStatus());
+        return tasks(model, 1,10);
     }
     @PostMapping("/")
-    public void add( Model model,
+    public String add( Model model,
                       @RequestBody TaskInfo info){
         Task task = taskService.create(info.getDescription(), info.getStatus());
+        return tasks(model, 1,10);
 
     }
 
@@ -53,6 +55,6 @@ public class TaskController {
             throw new RuntimeException("Invalid id");
         }
         taskService.delete(id);
-        return "tasks";
+        return tasks(model, 1,10);
     }
 }
