@@ -30,9 +30,10 @@ public class TaskService {
     @Transactional
     public Task edit(int id, String description, Status status) {
         Task task = taskDAO.getById(id);
-        if(isNull(task)){
+        if (isNull(task)) {
             throw new RuntimeException("Not found");
         }
+
         task.setDescription(description);
         task.setStatus(status);
         taskDAO.saveOrUpdate(task);
@@ -46,13 +47,14 @@ public class TaskService {
         taskDAO.saveOrUpdate(task);
         return task;
     }
+
     @Transactional
     public void delete(int id) {
         Task task = taskDAO.getById(id);
-        if(isNull(task)){
+        if (isNull(task)) {
             throw new RuntimeException("Not found");
         }
-        taskDAO.delete(task);
 
+        taskDAO.delete(task);
     }
 }

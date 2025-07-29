@@ -1,7 +1,11 @@
 package org.example.domain;
 
 
+
+
 import jakarta.persistence.*;
+
+
 
 @Entity
 @Table(schema = "todo", name = "task")

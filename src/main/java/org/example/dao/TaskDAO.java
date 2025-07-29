@@ -22,31 +22,31 @@ public class TaskDAO {
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<Task> getAll(int offset, int limit) {
-        Query<Task> query = getSession().createQuery("select t from Task t", Task.class);
-        query.setFirstResult(offset);
-        return query.getResultList();
-
-    };
+        Query<Task> queue = getSession().createQuery("select t from Task t", Task.class);
+        queue.setFirstResult(offset);
+        queue.setMaxResults(limit);
+        return queue.getResultList();
+    }
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public int getAllCount() {
-        Query<Long>  query = getSession().createQuery("select count(t) from Task t", Long.class);
-        return Math.toIntExact(query.uniqueResult());
+        Query<Long> queue = getSession().createQuery("select count(t) from Task t", Long.class);
+        return Math.toIntExact(queue.uniqueResult());
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Task getById(int id) {
-        Query<Task> query = getSession().createQuery("select t from Task t where t.id = :ID", Task.class);
-        query.setParameter("ID", id);
-        return query.uniqueResult();
+        Query<Task> queue = getSession().createQuery("select t from Task t where t.id = :ID", Task.class);
+        queue.setParameter("ID", id);
+        return queue.uniqueResult();
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void saveOrUpdate(Task task) {
         getSession().persist(task);
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Task task) {
         getSession().remove(task);
     }
